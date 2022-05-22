@@ -34,6 +34,13 @@ const userSchema = new Schema (
             ref: 'user',
             }
         ]
+    },
+    {
+        // include virtuals to include virutal properies
+        toJSON: {
+          virtuals: true,
+        },
+        id: false,
     }
 );
 
