@@ -19,7 +19,7 @@ module.exports = {
     },
     // Create a course
     createThought(req, res) {
-      Course.create(req.body)
+      thought.create(req.body)
         .then((thought) => res.json(thought))
         .catch((err) => {
           console.log(err);
@@ -28,7 +28,7 @@ module.exports = {
     },
     // Delete a course
     deleteThought(req, res) {
-      Course.findOneAndDelete({ _id: req.params.thoughtId })
+      thought.findOneAndDelete({ _id: req.params.thoughtId })
         .then((thought) =>
           !thought
             ? res.status(404).json({ message: 'No thought with that ID' })
@@ -38,8 +38,8 @@ module.exports = {
         .catch((err) => res.status(500).json(err));
     },
     // Update a course
-    updateCourse(req, res) {
-      Course.findOneAndUpdate(
+    updateThought(req, res) {
+      thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
         { $set: req.body },
         { runValidators: true, new: true }
