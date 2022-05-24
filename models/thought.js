@@ -1,30 +1,20 @@
 const { Schema, model, default: mongoose } = require('mongoose');
 
-let thoughtValidator = [
-    validate({
-      validator: 'isLength',
-      arguments: [1, 280],
-      message: 'Your thought should be between 1 and 280 characters'
-    }),
-  ];
-let reactionValidator = [
-    validate({
-      validator: 'isLength',
-      arguments: [280],
-      message: 'Your reaction should be no more than 280 characters'
-    }),
-  ];
 // subdocument of the schema 
 const reactionSchema = new mongoose.Schema (
     {
         reactionId: {
-            type: Types.ObjectId,
-            default: new ObjectId,
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'reactionId'
         },
         reactionBody: {
             type: String,
             required: function() {return this.reactionId != null},
-            validate: reactionValidator
+            validate: function (v) {
+                validator: 'isLength';
+                arguments: [280];
+                message: 'Your reaction should be no more than 280 characters'
+            }
         },
         username: {
             type: String,
@@ -33,30 +23,33 @@ const reactionSchema = new mongoose.Schema (
         createAt: {
             type: Date, 
             default: Date.now, 
-            get: thoughtSchema
+        
         }
-    }
-);
+    },
+    {toJSON: {getters: true}, id: false,});
 // main document for the thoughts 
 const thoughtSchema = new mongoose.Schema(
     {
         thoughtText: {
              type: String,
             required: function() {return this.thoughtTextlId != null},
-            validate: thoughtValidator
+            validate: function(v) {
+                validator: 'isLength';
+                arguments: [1, 280];
+                message: 'Your thought should be between 1 and 280 characters'
+            }
         },
         createAt: {
             type: Date, 
             default: Date.now, 
-            get: thoughtSchema
         },
         username: {
             type: String,
             required: function() {return this.usernameId != null}
         },
         reactions:[reactionSchema]
-    }
-);
+    },
+    {toJSON:{getters: true}, id: false,});
 
 
 const Thought = mongoose.model('Thought', thoughtSchema);
@@ -72,11 +65,11 @@ Thought.create({
             username: 'tinyteam',
             createdAt: 'MAY 23 2022'
         }
-    ].then (data => {
+    ]
+    }).then (data => {
         console.log(data)
     }).catch (err => {
         console.log(err);
-    })
 })
 
 const myReaction = new Thought ();

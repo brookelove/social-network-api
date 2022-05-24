@@ -12,14 +12,10 @@ const userSchema = new Schema (
         email: {
             type: String,
             // username is required if id is specified
-            required: function() {return this.emailId != null},
+            required: function() {return this.userId != null},
             unique: true,
-            // validation for an email starts 
-            required: 'Email address is required',
-                // validating email
-            validate: [validateEmail, 'Please make a valid email'],
             // starts with word can have \ . or - and maybe another word then an @ word with \ . or - and maybe another worj \ . word that are tor three characters long and that is where it ends
-            match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill use an email that is valid']
+            match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
 
         },
         thoughts:[
