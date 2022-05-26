@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const userSchema = new Schema (
+
     {
         username: {
             type: String,
@@ -21,7 +22,7 @@ const userSchema = new Schema (
         thoughts:[
             {
             type: Schema.Types.ObjectId,
-            ref: 'thoughts',
+            ref: 'thought',
             }
         ],
         friends:[
@@ -31,7 +32,7 @@ const userSchema = new Schema (
             }
         ]
     },
-    {
+   {
         // include virtuals to include virutal properies
         toJSON: {
           virtuals: true,

@@ -1,11 +1,12 @@
-const { Schema, model, default: mongoose } = require('mongoose');
+const { Schema, model, default: mongoose, Types } = require('mongoose');
 
 // subdocument of the schema 
 const reactionSchema = new mongoose.Schema (
     {
         reactionId: {
             type: mongoose.Schema.Types.ObjectId, 
-            ref: 'reactionId'
+            default: ()=> new Types.ObjectId()
+            //ref: 'reactionId'
         },
         reactionBody: {
             type: String,
@@ -60,7 +61,7 @@ Thought.create({
     username: 'tinyhouse<3',
     reactions: [
         {
-            reactionId: 1,
+            
             reactionBody: 'Oh my gosh I love tinyhouses too!',
             username: 'tinyteam',
             createdAt: 'MAY 23 2022'
