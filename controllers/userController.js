@@ -1,5 +1,5 @@
 const { User, Thought } = require('../models');
-const User = require('../models/user');
+// const User = require('../models/user');
 
 module.exports = {
   getUsers(req, res) {
@@ -37,7 +37,7 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // Delete a user and associated apps
+  // Delete a user and associated thoughts
   deleteUser(req, res) {
     User.findOneAndDelete({ _id: req.params.userId })
       .then((user) =>
@@ -63,7 +63,7 @@ module.exports = {
           .catch((err) => res.status(500).json(err));
       },
       deleteFriend(req, res) {
-        User.findOneAndDelete(
+        User.findOneAndRemove(
           { _id: req.params.friendId },
           { $pull: {reactions: {friendId: req.params.friendId}}},
           {runValidators: true, new: true}
@@ -71,7 +71,7 @@ module.exports = {
           .then((user) =>
             !user
               ? res.status(404).json({ message: 'No friends with that ID' })
-              : Friends.deleteMany({ _id: { $in: User.friends } })
+              : Friends.deleteMany({ _id: { $in: user.friends } })
           )
           .then(() => res.json({ message: 'Freinds were deleted!' }))
           .catch((err) => res.status(500).json(err));
