@@ -1,4 +1,5 @@
 const { User, Thought } = require('../models');
+const { db } = require('../models/thought');
 // const User = require('../models/user');
 
 module.exports = {
@@ -39,6 +40,7 @@ module.exports = {
   },
   // Delete a user and associated thoughts
   deleteUser(req, res) {
+    console.log("In the delete user route!")
     User.findOneAndDelete({ _id: req.params.userId })
       .then((user) =>
         !user
@@ -48,32 +50,34 @@ module.exports = {
       .then(() => res.json({ message: 'User and associated thoughts are deleted!' }))
       .catch((err) => res.status(500).json(err));
   },
-      // create a reaction 
+      // create a new friend
       addFriend(req, res) {
         User.findOneAndUpdate(
-          { _id: req.params.thoughtId },
-          { $addToSet: {friends:req.body}},
-          { runValidators: true, new: true }
+          { _id: req.params.uderId },
+          { $addToSet: {friends:req.params.friendId}},
+          { new: true }
+        ).then((dbUserData) => {
+          if (!dbUserData) {
+            return res.statis(404).json({message: "No user with this id!"});
+          }
+          res.json(dbUserData);
+      }).catch ((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      })
+    },
+    deleteFriend(req, res) {
+      User.findOneAndRemove(
+        { _id: req.params.friendId },
+        { $pull: {reactions: {friendId: req.params.friendId}}},
+        {runValidators: true, new: true}
+      )
+        .then((user) =>
+          !user
+            ? res.status(404).json({ message: 'No friends with that ID' })
+            : Friends.deleteMany({ _id: { $in: user.friends } })
         )
-          .then((reaction) =>
-            !reaction
-              ? res.status(404).json({ message: 'No friends found with this id!' })
-              : res.json(reaction)
-          )
-          .catch((err) => res.status(500).json(err));
-      },
-      deleteFriend(req, res) {
-        User.findOneAndRemove(
-          { _id: req.params.friendId },
-          { $pull: {reactions: {friendId: req.params.friendId}}},
-          {runValidators: true, new: true}
-        )
-          .then((user) =>
-            !user
-              ? res.status(404).json({ message: 'No friends with that ID' })
-              : Friends.deleteMany({ _id: { $in: user.friends } })
-          )
-          .then(() => res.json({ message: 'Freinds were deleted!' }))
-          .catch((err) => res.status(500).json(err));
-      },
-};
+        .then(() => res.json({ message: 'Freinds were deleted!' }))
+        .catch((err) => res.status(500).json(err));
+    }
+  };
