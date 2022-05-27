@@ -36,4 +36,43 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
+  // Delete a user and associated apps
+  deleteUser(req, res) {
+    User.findOneAndDelete({ _id: req.params.userId })
+      .then((user) =>
+        !user
+          ? res.status(404).json({ message: 'No user with that ID' })
+          : Application.deleteMany({ _id: { $in: user.applications } })
+      )
+      .then(() => res.json({ message: 'User and associated thoughts are deleted!' }))
+      .catch((err) => res.status(500).json(err));
+  },
+      // create a reaction 
+      addFriend(req, res) {
+        User.findOneAndUpdate(
+          { _id: req.params.thoughtId },
+          { $addToSet: {friends:req.body}},
+          { runValidators: true, new: true }
+        )
+          .then((reaction) =>
+            !reaction
+              ? res.status(404).json({ message: 'No friends found with this id!' })
+              : res.json(reaction)
+          )
+          .catch((err) => res.status(500).json(err));
+      },
+      deleteFriend(req, res) {
+        User.findOneAndDelete(
+          { _id: req.params.friendId },
+          { $pull: {reactions: {friendId: req.params.friendId}}},
+          {runValidators: true, new: true}
+        )
+          .then((user) =>
+            !user
+              ? res.status(404).json({ message: 'No friends with that ID' })
+              : Friends.deleteMany({ _id: { $in: User.friends } })
+          )
+          .then(() => res.json({ message: 'Freinds were deleted!' }))
+          .catch((err) => res.status(500).json(err));
+      },
 };
