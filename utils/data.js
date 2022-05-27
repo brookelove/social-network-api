@@ -1,72 +1,27 @@
 const names = [
-    'Aaran',
-    'Aaren',
-    'Aarez',
-    'Aarman',
-    'Aaron',
-    'Aaron-James',
-    'Aarron',
-    'Aaryan',
-    'Aaryn',
-    'Aayan',
-    'Aazaan',
-    'Abaan',
-    'Abbas',
-    'Abdallah',
-    'Abdalroof',
-    'Abdihakim',
-    'Abdirahman',
-    'Abdisalam',
-    'Abdul',
-    'Abdul-Aziz',
-    'Abdulbasir',
-    'Abdulkadir',
-    'Abdulkarem',
-    'Ze',
-    'Zechariah',
-    'Zeek',
-    'Zeeshan',
-    'Zeid',
-    'Zein',
-    'Zen',
-    'Zendel',
-    'Zenith',
-    'Zennon',
-    'Zeph',
-    'Zerah',
-    'Zhen',
-    'Zhi',
-    'Zhong',
-    'Zhuo',
-    'Zi',
-    'Zidane',
-    'Zijie',
-    'Zinedine',
-    'Zion',
-    'Zishan',
-    'Ziya',
-    'Ziyaan',
-    'Zohaib',
-    'Zohair',
-    'Zoubaeir',
-    'Zubair',
-    'Zubayr',
-    'Zuriel',
-    ``,
+    {
+      username:'Aaran',
+      email: 'aran.aran@gmail.com'
+    },
+    {
+      username: 'Willow',
+      email: 'willow.willow@gmail.com',
+    }
   ];
 
   const thoughtBodies = [
-    'How to disagree with someone',
-    'iPhone review',
-    'how-to video',
-    'video essay on the history of video games',
-    'How to make money on the App Store',
-    'Learn NextJS in five minutes (Not clickbate)',
-    'Movie trailer',
-    'Hello world',
-    'Another possible solution to the algorithm',
-    'Apology video',
-    'Submission for startup pitch',
+    {
+    thougthText: 'How to disagree with someone',
+    username: 'Willow'
+    },
+    {
+      thougthText: 'iPhone review',
+      username: "Willow"
+    },
+    {
+      thougthText: 'how-to video',
+      username: "Aaran"
+    },
   ];
   
   const possibleResponses = [
@@ -84,21 +39,23 @@ const names = [
 // Get a random item given an array
 const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-// Gets a random full name
-const getRandomName = () =>
-  `${getRandomArrItem(names)} ${getRandomArrItem(names)}`;
+// Get a random item given an array
+const getRandomThought = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+// Gets a random user
+const getRandomUser = () => getRandomArrItem(names);
 
 // Function to generate random videos that we can add to the database. Includes video responses.
-const getRandomVideos = (int) => {
-  let results = [];
-  for (let i = 0; i < int; i++) {
-    results.push({
-      description: getRandomArrItem(thoughtBodies),
-      responses: [...getThoughtResponses(3)],
-    });
-  }
-  return results;
-};
+// const getRandomVideos = (int) => {
+//   let results = [];
+//   for (let i = 0; i < int; i++) {
+//     results.push({
+//       description: getRandomArrItem(thoughtBodies),
+//       responses: [...getThoughtResponses(3)],
+//     });
+//   }
+//   return results;
+// };
 
 // Create the responses that will be added to each video
 const getThoughtResponses = (int) => {
@@ -116,4 +73,4 @@ const getThoughtResponses = (int) => {
 };
 
 // Export the functions for use in seed.js
-module.exports = { getRandomName, getRandomVideos, getRandomVideos };
+module.exports = { getRandomUser, getRandomThought, thoughtBodies };

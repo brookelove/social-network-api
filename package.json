@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index",
-    "seed": "node utils/seed"
+    "seed": "node utils/seed",
+    "data": "node utils/data"
   },
   "repository": {
     "type": "git",

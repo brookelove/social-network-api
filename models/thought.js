@@ -10,7 +10,7 @@ const reactionSchema = new mongoose.Schema (
         },
         reactionBody: {
             type: String,
-            required: function() {return this.reactionId != null},
+            required: true,
             validate: function (v) {
                 validator: 'isLength';
                 arguments: [280];
@@ -19,7 +19,7 @@ const reactionSchema = new mongoose.Schema (
         },
         username: {
             type: String,
-            required: function() {return this.usernameId != null},
+            required: true,
         },
         createAt: {
             type: Date, 
@@ -33,7 +33,7 @@ const thoughtSchema = new mongoose.Schema(
     {
         thoughtText: {
              type: String,
-            required: function() {return this.thoughtTextlId != null},
+            required: true,
             validate: function(v) {
                 validator: 'isLength';
                 arguments: [1, 280];
@@ -46,7 +46,7 @@ const thoughtSchema = new mongoose.Schema(
         },
         username: {
             type: String,
-            required: function() {return this.usernameId != null}
+            required: true
         },
         reactions:[reactionSchema]
     },
@@ -55,23 +55,23 @@ const thoughtSchema = new mongoose.Schema(
 
 const Thought = mongoose.model('Thought', thoughtSchema);
 
-Thought.create({
-    thoughtText: 'I love tiny houses',
-    createAt: 'MAY 22, 2022',
-    username: 'tinyhouse<3',
-    reactions: [
-        {
+// Thought.create({
+//     thoughtText: 'I love tiny houses',
+//     createAt: 'MAY 22, 2022',
+//     username: 'tinyhouse<3',
+//     reactions: [
+//         {
             
-            reactionBody: 'Oh my gosh I love tinyhouses too!',
-            username: 'tinyteam',
-            createdAt: 'MAY 23 2022'
-        }
-    ]
-    }).then (data => {
-        console.log(data)
-    }).catch (err => {
-        console.log(err);
-})
+//             reactionBody: 'Oh my gosh I love tinyhouses too!',
+//             username: 'tinyteam',
+//             createdAt: 'MAY 23 2022'
+//         }
+//     ]
+//     }).then (data => {
+//         console.log(data)
+//     }).catch (err => {
+//         console.log(err);
+// })
 
 const myReaction = new Thought ();
 module.exports = Thought;
